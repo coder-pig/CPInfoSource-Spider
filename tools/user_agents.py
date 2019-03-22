@@ -1,8 +1,14 @@
 # -*- coding: utf-8 -*-
 """
-浏览器User-Agent请求头大全
-源：https://fake-useragent.herokuapp.com/browsers/0.1.11
+-------------------------------------------------
+  File: test.py
+  Desc: 浏览器User-Agent请求头大全
+        来源：https://fake-useragent.herokuapp.com/browsers/0.1.11
+  Author: CoderPig
+  Date: 2019/3/22 0022 14:46
+-------------------------------------------------
 """
+
 import random
 
 user_agent_dict = dict(chrome=[
