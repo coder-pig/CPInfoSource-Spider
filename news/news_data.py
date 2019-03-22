@@ -32,7 +32,7 @@ class News:
         news_dict['overview'] = self.overview
         news_dict['url'] = self.url
         news_dict['image'] = self.image
-        news_dict['publish_time'] = self.create_time
+        news_dict['publish_time'] = self.publish_time
         news_dict['origin'] = self.origin
         news_dict['create_time'] = self.create_time
         news_dict['update_time'] = self.update_time
