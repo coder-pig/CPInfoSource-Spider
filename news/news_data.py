@@ -37,3 +37,4 @@ class News:
         news_dict['create_time'] = self.create_time
         news_dict['update_time'] = self.update_time
         return news_dict
+

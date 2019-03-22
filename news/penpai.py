@@ -20,7 +20,7 @@ from news import MongodbClient
 penpai_url = 'https://www.thepaper.cn/'
 penpai_ajax_url = 'https://www.thepaper.cn/load_chosen.jsp?'
 penpai_headers = {
-    'referer': penpai_url,
+    'Referer': penpai_url,
     'Host': str_handle.remove_url_scheme(penpai_url)[:-1],
     'User-Agent': user_agents.random_user_agent()
 }

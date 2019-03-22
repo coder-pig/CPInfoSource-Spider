@@ -24,3 +24,6 @@ class MongodbClient:
             self.db[self.name].insert_many(data, ordered=False)
         except errors.BulkWriteError as e:
             print(e)
+
+    def __del__(self):
+        self.client.close()
