@@ -31,6 +31,8 @@ cids_pattern = re.compile('&topCids=(.*?)&', re.S)
 news_pattern = re.compile(
     r'<a href="(.*?)".*?img src="(.*?)" alt="(.*?)".*?<p>(.*?)</p>.*?pdtt_trbs".*?<a.*?>'
     r'(.*?)</a>.*?<span>(.*?)</span>', re.S)
+# 提取多少个小时前的正则
+hours_pattern = re.compile(r'(\d+)小时前', re.S)
 
 
 def fetch_penpai_news():
@@ -70,16 +72,19 @@ def fetch_penpai_news():
         print("爬取：", resp.url)
         results = news_pattern.findall(resp_content)
         for result in results:
-            if result[5] == '1天前':
-                return news_list
-            else:
-                news_list.append(News(_id=result[0].split('_')[-1],
-                                      title=result[2],
-                                      overview=result[3].replace('\n', '').replace(' ', ''),
-                                      url=penpai_url + result[0],
-                                      image='http:' + result[1],
-                                      publish_time=result[5],
-                                      origin=result[4]).to_dict())
+            if '小时前' in result[5]:
+                hours_before = hours_pattern.search(result[5])
+                if hours_before is not None:
+                    if int(hours_before.group(1)) > 12:
+                        return news_list
+                    else:
+                        news_list.append(News(_id=result[0].split('_')[-1],
+                                              title=result[2],
+                                              overview=result[3].replace('\n', '').replace(' ', ''),
+                                              url=penpai_url + result[0],
+                                              image='http:' + result[1],
+                                              publish_time=result[5],
+                                              origin=result[4]).to_dict())
         pageidx += 1
         time.sleep(random.randint(0, 2))
 
