@@ -8,14 +8,11 @@
 -------------------------------------------------
 """
 
-import re
-
 import requests as r
 from pyquery import PyQuery
 
 from news import News, MongodbClient
 from tools import user_agents, str_handle
-import time
 
 index_url = 'https://www.cyzone.cn/'
 category_url = index_url + 'category/8/'
