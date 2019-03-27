@@ -7,17 +7,18 @@
   Date: 2019/3/27 0027 16:18
 -------------------------------------------------
 """
-from news import News, MongodbClient
-from tools import str_handle, user_agents
+import re
+
 import requests as r
 from pyquery import PyQuery
-import re
+
+from news import News, MongodbClient
+from tools import user_agents
 
 base_url = 'https://www.iyiou.com/breaking/'
 headers = {
     'User-Agent': user_agents.random_user_agent()
 }
-news_id_pattern = re.compile("c_(\d+).htm", re.S)  # 提取新闻id的正则
 
 
 def fetch_news(url):
