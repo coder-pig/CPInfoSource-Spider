@@ -34,7 +34,7 @@ def fetch_iheima_news():
             for content in contents:
                 # 只抓取12个小时以内的新闻
                 if int(round(time.time())) - int(
-                        time.mktime(time.strptime(content['published'], "%Y-%m-%d %H:%M"))) > 43200:
+                        time.mktime(time.strptime(content['published'], "%Y-%m-%d %H:%M"))) > 86400:
                     return news_list
                 else:
                     news_list.append(News(
