@@ -9,11 +9,12 @@
 """
 
 import time
+
 import requests as r
-import re
+from pyquery import PyQuery
+
 from news import News, MongodbClient
 from tools import user_agents, str_handle
-from pyquery import PyQuery
 
 index_url = 'https://www.d1ev.com/'
 news_flash_url = index_url + 'newsflash'
@@ -55,4 +56,3 @@ if __name__ == '__main__':
             continue
         else:
             break
-
