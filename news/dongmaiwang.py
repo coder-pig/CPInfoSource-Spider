@@ -7,12 +7,13 @@
   Date: 2019/3/29 0029 11:13
 -------------------------------------------------
 """
+import json
+import re
+
+import requests as r
+
 from news import News, MongodbClient
 from tools import str_handle, user_agents
-import requests as r
-import time
-import re
-import json
 
 index_url = 'https://vcbeat.net/'
 ajax_url = index_url + 'Index/Index/ajaxGetArticleList'
