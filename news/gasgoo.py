@@ -9,10 +9,8 @@
 """
 
 import time
-
 import requests as r
 import re
-
 from news import News, MongodbClient
 from tools import user_agents, str_handle
 from pyquery import PyQuery
