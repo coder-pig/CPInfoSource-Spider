@@ -93,3 +93,4 @@ if __name__ == '__main__':
     client = MongodbClient('penpai')
     data_list = fetch_penpai_news()
     client.insert_many(data_list)
+    print("澎湃新闻爬取完毕！")

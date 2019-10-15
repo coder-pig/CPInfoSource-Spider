@@ -36,13 +36,14 @@ def fetch_news(page):
         for item in news_item.items():
             a_url = item('div > p > a').attr('href')
             item_main = title_extract_pattern.search(item('div.item-main').text())
-            news_list.append(News(
-                _id=a_url.split('/')[-1].replace('.html', ''),
-                url=a_url,
-                title=item_main.group(1),
-                overview=item_main.group(2),
-                publish_time=item('div.item-date').text()
-            ).to_dict())
+            if item_main is not None:
+                news_list.append(News(
+                    _id=a_url.split('/')[-1].replace('.html', ''),
+                    url=a_url,
+                    title=item_main.group(1),
+                    overview=item_main.group(2),
+                    publish_time=item('div.item-date').text()
+                ).to_dict())
     return news_list
 
 
@@ -50,3 +51,4 @@ if __name__ == '__main__':
     client = MongodbClient('jiemian')
     client.insert_many(fetch_news(1))
     client.insert_many(fetch_news(2))
+    print("界面新闻爬取完毕！")

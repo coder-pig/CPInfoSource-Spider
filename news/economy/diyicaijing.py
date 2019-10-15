@@ -29,6 +29,7 @@ diyicaijing_headers = {
 def fetch_diyicaijing_news():
     news_list = []
     resp = r.get(diyicaijing_url, params={'page': 2}, headers=diyicaijing_headers)
+    print("爬取", resp.url)
     bs = BeautifulSoup(resp.text, 'lxml')
     articles = bs.findAll('article', attrs={'class': 'article-item clearfix'})
     for article in articles:
@@ -52,3 +53,4 @@ def fetch_diyicaijing_news():
 if __name__ == '__main__':
     client = MongodbClient('diyicaijing')
     client.insert_many(fetch_diyicaijing_news())
+    print("第一财经爬取完毕！")

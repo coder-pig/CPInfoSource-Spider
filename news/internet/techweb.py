@@ -24,6 +24,7 @@ headers = {
 def fetch_news():
     news_list = []
     resp = r.get(roll_url, headers=headers)
+    print("爬取：%s" % resp.url)
     if resp is not None:
         resp.encoding = 'utf8'
         pq = PyQuery(resp.text)
@@ -44,3 +45,4 @@ def fetch_news():
 if __name__ == '__main__':
     client = MongodbClient('techweb')
     client.insert_many(fetch_news())
+    print("techweb爬取完毕!")

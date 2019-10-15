@@ -50,3 +50,4 @@ def fetch_news():
 if __name__ == '__main__':
     client = MongodbClient('chuangyebang')
     client.insert_many(fetch_news())
+    print("创业邦爬取完毕!")

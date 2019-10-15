@@ -8,8 +8,6 @@
    date     : 2019/7/12 0012 下午 02:58
 -------------------------------------------------
 """
-import random
-import time
 
 import requests as r
 from bs4 import BeautifulSoup
@@ -31,13 +29,13 @@ def fetch_news():
     print("抓取：", resp.url)
     if resp is not None:
         bs = BeautifulSoup(resp.text, 'lxml')
-        data_list = bs.find_all("div", attrs={"class": "scr-newsarea"})[0]
+        data_list = bs.find_all("div", attrs={"bosszone": "TS_Mainnews"})[0]
         a_s = data_list.find_all("a")
         cur = 1
         for a in a_s:
             news_list.append(News(
                 _id=cur,
-                title=a['title'],
+                title=a.text,
                 origin="腾讯体育",
                 url=a['href']
             ).to_dict())
@@ -48,3 +46,4 @@ def fetch_news():
 if __name__ == '__main__':
     client = MongodbClient('txty')
     client.insert_many(fetch_news())
+    print("腾讯体育爬取完毕!")

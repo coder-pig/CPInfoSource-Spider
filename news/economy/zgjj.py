@@ -32,6 +32,7 @@ headers = {
 
 def fetch_web_news():
     resp = r.get(index_url, headers=headers)
+    print("爬取%s" % resp.url)
     resp.encoding = 'gbk'  # 设置编码b
     bs = BeautifulSoup(resp.text, 'lxml')
     a_bs = bs.find_all("a")
@@ -55,4 +56,4 @@ def fetch_web_news():
 if __name__ == '__main__':
     client = MongodbClient('zgjj')
     client.insert_many(fetch_web_news())
-    print("中国经济网数据爬取完毕!")
+    print("中国经济网爬取完毕!")

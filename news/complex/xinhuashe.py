@@ -79,3 +79,4 @@ if __name__ == '__main__':
     client = MongodbClient('xinhuashe')
     client.insert_many(fetch_xh_focus())
     client.insert_many(fetch_gd_news())
+    print("新华社爬取完毕！")

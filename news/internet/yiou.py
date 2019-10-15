@@ -42,3 +42,4 @@ if __name__ == '__main__':
     client = MongodbClient('yiou')
     for i in range(1, 3):
         client.insert_many(fetch_news("{}p{}.html".format(base_url, i)))
+    print("yiou爬取完毕!")

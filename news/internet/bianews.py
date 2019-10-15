@@ -59,3 +59,4 @@ if __name__ == '__main__':
             continue
         else:
             break
+    print("bianews爬取完毕!")

@@ -9,45 +9,40 @@
 """
 import json
 import re
+import time
 
 import requests as r
 
 from news import News, MongodbClient
 from tools import str_handle, user_agents
 
-index_url = 'https://vcbeat.net/'
-ajax_url = index_url + 'Index/Index/ajaxGetArticleList'
+index_url = 'https://dynview.vcbeat.top'
+ajax_url = index_url + '/dg/list'
+news_detail_url = index_url + '/newsDetail/'
 headers = {
-    'Host': str_handle.remove_url_scheme(index_url)[:-1],
     'User-Agent': user_agents.random_user_agent(),
-    'Origin': index_url,
-    'Referer': index_url,
-    'X-Requested-With': 'XMLHttpRequest'
+    'Content-Type': 'application/json'
 }
-
-# 提取多少个小时前的正则
-hours_pattern = re.compile(r'(\d+)小时前', re.S)
+ajax_params = {"days": "", "type": [], "s_time": "", "e_time": "", "demostic": "", "address_id": [],
+               "is_tj": "", "group_id": [], "dynview_tag_ids": [], "entity_uids": [], "entity_ids": []}
 
 
 def fetch_news(page):
     news_list = []
-    resp = r.get(ajax_url, params={'page': page, 'industry_class': ''}, headers=headers)
-    print("抓取：", resp.url)
+    ajax_params['page'] = page
+    ajax_params['latest_time'] = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))
+    resp = r.post(ajax_url, data=json.dumps(ajax_params), headers=headers)
     if resp is not None:
-        resp_str = resp.text
-        if resp_str.startswith(u'\ufeff'):
-            resp_str = resp_str.encode('utf8')[3:].decode('utf8')
-            data = json.loads(resp_str)['data']
-            for d in data:
-                news_list.append(News(
-                    _id=d['detail_id'],
-                    title=d['title'],
-                    overview=d['summary'],
-                    image=index_url + d['logo_path'],
-                    publish_time=d['publish_time'],
-                    origin=d['categoryName'] + '|' + d['authorName'],
-                    url=index_url + d['detail_id']
-                ).to_dict())
+        res = resp.json()
+        for i in res['res']:
+            news_list.append(News(
+                _id=i['id'],
+                title=i['title'],
+                overview=i['content'],
+                publish_time=i['create_time'],
+                origin=i['src_name'],
+                url=news_detail_url + i['uid']
+            ).to_dict())
     return news_list
 
 
@@ -55,21 +50,14 @@ if __name__ == '__main__':
     client = MongodbClient('dongmaiwang')
     cur_page = 1
     while True:
+        print("爬取第%d页" % cur_page)
         result_list = fetch_news(cur_page)
         client.insert_many(result_list)
-        last_publish_time = result_list[-1]['publish_time']
-        if '分钟前' in last_publish_time:
+        if int(round(time.time())) - int(
+                time.mktime(time.strptime(result_list[-1]['publish_time'], "%Y-%m-%d %H:%M:%S"))) < 43200:
             cur_page += 1
             continue
-        elif '小时前' in last_publish_time:
-            hours_before = hours_pattern.search(last_publish_time)
-            if hours_before is not None:
-                if int(hours_before.group(1)) < 12:
-                    cur_page += 1
-                    continue
-                else:
-                    break
-            else:
-                break
         else:
             break
+    print("动脉网爬取完毕!")
+

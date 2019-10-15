@@ -66,3 +66,4 @@ if __name__ == '__main__':
     for i in category_key_dict.keys():
         client.insert_many(fetch_news(i))
         time.sleep(random.randint(0, 2))
+    print("新浪科技爬取完毕！")

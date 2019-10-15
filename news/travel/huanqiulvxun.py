@@ -69,3 +69,4 @@ if __name__ == '__main__':
                 break
         else:
             break
+    print("环球旅讯爬取完毕!")

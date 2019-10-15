@@ -65,3 +65,4 @@ if __name__ == '__main__':
                     continue
         else:
             break
+    print("鲸媒体爬取完毕!")

@@ -89,3 +89,4 @@ if __name__ == '__main__':
     client = MongodbClient('36Kr')
     client.insert_many(result_list)
     client.insert_many(data_list)
+    print("36kr爬取完毕!")

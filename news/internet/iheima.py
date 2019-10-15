@@ -52,3 +52,4 @@ def fetch_iheima_news():
 if __name__ == '__main__':
     client = MongodbClient('iheima')
     client.insert_many(fetch_iheima_news())
+    print("爱黑马爬取完毕!")

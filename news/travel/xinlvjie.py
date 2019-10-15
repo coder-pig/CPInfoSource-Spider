@@ -28,18 +28,18 @@ def fetch_news():
     if resp is not None:
         resp.encoding = 'utf8'
         pq = PyQuery(resp.text)
-        data_list = pq('div#data_list')
-        for div in data_list('div.li').items():
-            img = div('a > img')
-            shuoming = div('div > p.shuoming')
+        data_list = pq('ul#date-list-ul')
+        for li in data_list('li').items():
+            img = li('a > img')
+            print(li('p').text())
             news_list.append(News(
-                _id=div('a').attr('href').split('/')[-1].replace('.html', ''),
+                url=li('a').attr('href'),
+                _id=li('a').attr('href').split('/')[-1].replace('.html', ''),
                 title=img.attr('alt'),
-                overview=div('div > p.listCont > a').text(),
                 image=img.attr('src'),
-                publish_time=shuoming('span.time.meta-date').text(),
-                origin=shuoming('span.meta-befrom').text(),
-                url=div('a').attr('href')
+                overview=li('div#list-t p#list-abs').text(),
+                publish_time=li('div#list-t > p#list-sm span:first').text(),
+                origin=li('div#list-t > p#list-sm > span:last').text(),
             ).to_dict())
     return news_list
 
@@ -47,3 +47,4 @@ def fetch_news():
 if __name__ == '__main__':
     client = MongodbClient('xinlvjie')
     client.insert_many(fetch_news())
+    print("新旅社爬取完毕!")
